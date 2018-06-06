@@ -35,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private android.location.LocationManager locationManager;
     private Location myLocation;
 
-    private boolean gotMyLocationOneTIme;
+    private boolean gotMyLocationOneTime;
     private boolean isGPSEnabled = false;
     private boolean isNetworkEnabled = false;
 
@@ -77,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(laJolla).title("born here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laJolla));
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        /*if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             Log.d("MyMapsApp", "Failed Fine permission check");
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},2);
         }
@@ -89,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) ||
                 (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)){
             mMap.setMyLocationEnabled(true);
-        }
+        }*/
 
         locationSearch = (EditText)findViewById(R.id.editText_addr);
 
@@ -223,7 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("MyMapsApp", "getLocation: Network is enabled");
             dropAmarker(LocationManager.NETWORK_PROVIDER);
             // Check if doing one time via onMapReady, if so remove updates to both gps and network
-            if(gotMyLocationOneTIme==false)
+            if(gotMyLocationOneTime==false)
             {
                 locationManager.removeUpdates(this);
                 locationManager.removeUpdates(locationListenerGps);
@@ -257,5 +257,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onProviderDisabled(String provider) {
 
         }
+    };
+    LocationListener locationListenerGps = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            //if doing one time remove updates to both gps and network
+            //false do nothing
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            //switch
+                //case LocationProvider.AVAILABLE
+            //break
+            //case Locationprovider of service
+            //enable network updates
+            //break
+            //case LocationProvider. temporary unavialbe
+                //enable both network and gps
+                //break
+            //default both network and gps
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    public void dropAMarker(String provider){
+
+        //if(locationManater!= null)
+        //if (checkSelfPermission fails)
+        //return
+        //myLocation = LocationManager.getLastKnownLocation(provider)
+        //LatLng user Location = null
+        //if(myLocation == null) print log or toast message
+        //else
+        //userLocation - new LatLng(myLocation.getLatitude(), myLocation.getLongitude()
+        //CameraUpdate update = CameraUpdateFactory.newLatLngZoom(userLocation, MY_LOC_ZOOM
+        //if (provider == LocationManager.GPS_PROVIDER)
+        //  add circle for the marker with 2 outer rings (red)
+        //  mMap.addCircle(new CircleOptions()
+        //  .center(userLocation)
+        //  .radius(1)
+        //  .strokeColor*Color.RED)
+        // strokeWidth(2)
+        // .fillColor(Color.RED)
+        // else add circle for the marker with 2 outer rings (blue)
+        // mMap.animateCamera(update)
+    }
+
+    public void trackMyLocation(View view){
+        //kick off the location tracket using getLocation to start the LocationListener
+        //if(notTrackingLocation) (getLocation(); notTrackingMyLocation = false;
+        //else (removeUpdates for both network and gps; not TrackingMyLocation = true;
     }
 }
